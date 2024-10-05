@@ -123,3 +123,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#config auth // dizendo para o django que autentificacao sera feita atravez do app x 
+
+AUTH_USER_MODEL='Accounts.Users'
+
+#role permissions /informar o django sobre as minhas permissoes 
+
+ROLEPERMISSIONS_MODULE ='URL_Shortener_API_Core.roles'
+
