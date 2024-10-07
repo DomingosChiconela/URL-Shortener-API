@@ -8,8 +8,9 @@ from  uuid import  uuid4
 
 
 class Users(AbstractUser):
-    id = models.UUIDField(primary_key=True,default=uuid4, editable=False)
-    Status_choices=(('N','Normal'),
+    status_choices=(('N','Normal'),
                    ('A','Admin')) 
+    id = models.UUIDField(primary_key=True,default=uuid4, editable=False)
     
-    status = models.CharField(max_length=1,choices=Status_choices)
+    
+    status = models.CharField(max_length=1,choices=status_choices)
