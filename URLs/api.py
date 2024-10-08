@@ -41,7 +41,7 @@ def createShortUrl(request,data:UrlSchema):
         return 500, {"message": "Internal server error" }
     
 @router.get("/{shortUrl}", response={404: MessageSchema, 500: MessageSchema})
-def getOriginalUrl(request, shortUrl: str):
+def getOriginalUrl(request, shortUrl:str):
     "Endpoint to be redirected to the original URL passing the shortened URL as a parameter"
     try:
         
@@ -62,7 +62,7 @@ def getOriginalUrl(request, shortUrl: str):
 
     except Exception as e:
         print(str(e))
-        return 500, {"message": "Internal server error"}
+        return 500, {"message": f"Internal server error  {e}"}
     
     
 
@@ -87,7 +87,7 @@ def getshortUrlInfo(request, shortUrl: str):
 
     except Exception as e:
         print(str(e))
-        return 500, {"message": "Internal server error"}
+        return 500, {"message": f"Internal server error  {e}"}
     
     
     
