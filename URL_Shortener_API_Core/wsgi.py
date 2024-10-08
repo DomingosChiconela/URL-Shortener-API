@@ -10,7 +10,11 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
+from URL_Shortener_API_Core.create_superuser_deploy import create_superuser
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'URL_Shortener_API_Core.settings')
 
+create_superuser()
 application = get_wsgi_application()
+
+
