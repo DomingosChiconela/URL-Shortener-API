@@ -34,7 +34,7 @@ def createShortUrl(request,data:UrlSchema):
         url_instance = Urls(original_url=original_url, short_url=short_url,user_id=request.auth.id)
         url_instance.save()
 
-        return 201, {"message": "URL created successfully!", "short_url": url_instance.short_url}
+        return 201, {"message": "URL created successfully!", "short_url": f"https://shortener-0s3u.onrender.com/api/urls/{url_instance.short_url}"}
     
     except Exception  as e:
         print(str(e))
@@ -62,7 +62,7 @@ def getOriginalUrl(request, shortUrl:str):
 
     except Exception as e:
         print(str(e))
-        return 500, {"message": f"Internal server error  {e}"}
+        return 500, {"message": f"Internal server error"}
     
     
 
@@ -87,7 +87,7 @@ def getshortUrlInfo(request, shortUrl: str):
 
     except Exception as e:
         print(str(e))
-        return 500, {"message": f"Internal server error  {e}"}
+        return 500, {"message": "Internal server error"}
     
     
     
