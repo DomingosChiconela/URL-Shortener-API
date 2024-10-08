@@ -11,11 +11,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 import os
+from os import getenv
+from dotenv import load_dotenv
+load_dotenv ()
 
 
-from uuid  import  uuid4
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'rolepermissions',
     'Accounts',
     'URLs'
@@ -123,8 +127,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'templates/static'),)
-STATIC_ROOT = os.path.join('static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
@@ -144,4 +146,16 @@ AUTH_USER_MODEL='Accounts.Users'
 #role permissions /informar o django sobre as minhas permissoes 
 
 ROLEPERMISSIONS_MODULE ='URL_Shortener_API_Core.roles'
+
+
+#configurando o mecanismo para gerar ojwt 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+  #  'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
+  #  'ROTATE_REFRESH_TOKENS': True,
+ #   'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY':getenv('SECRET'),  
+    'AUTH_HEADER_TYPES': ('Bearer',),  
+}
 

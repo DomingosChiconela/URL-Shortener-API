@@ -5,6 +5,8 @@ from django.contrib.auth.hashers import make_password
 from .models import Users
 import re
 from django.contrib  import auth
+from rest_framework_simplejwt.tokens import AccessToken
+from .security  import JWTAuth
 
 router = Router()
 
@@ -35,50 +37,49 @@ def register(request, data: RegisterUserSchema):
         print(str(e))
         return 500,{"message":"Internal server error"}
 
-@router.post("/login",response={400:MessageSchema,500:MessageSchema})
+@router.post("/login",response={200:dict,400:MessageSchema,500:MessageSchema})
 def login(request,data:LoginSchema):
     try:
         user= auth.authenticate(username=data.username, password=data.Password)
         if not user:
             return 400,{'Invalid user or Password'}
         
-        auth.login(request,user)
-        return 200,{"message":"Authenticated user"}
+        access_token = AccessToken.for_user(user)
+
+        
+        return 200, {
+            "token": str(access_token)
+        }
+       
     
-    except Exception:
+    except Exception as e:
+        print(str(e))
         return 500,{"message":"internal erro"}
         
-@router.post("/logout")
+@router.post("/logout", auth=JWTAuth(), response={200: dict, 400: MessageSchema})
 def logout(request):
-    "Endpoint para realizar logout."
-    request.session.flush()
-    return 200,{"success": True}
-    
-    
-
-
-
-
-
-
-
-
-@router.get("/{user_id}",response=ResponseSchema)
-def getUser(request,user_id:str):
-    
-    
+   
     try:
-        
-        user = Users.objects.get(id= user_id)
-        
-        if not user:
-            return  404,{"message":"user not found"}
-        
-        return 200, user
-        
-    except Exception :
-        return 500,{"message":"Server internal erro"}
+     
+        refresh_token = request.data.get('refresh')
+
+        if not refresh_token:
+            return 400, {"message": "Refresh token is required"}
+
+       
+        token = RefreshToken(refresh_token)
+        token.blacklist()  
+
+        return 200, {"message": "Logout successful"}
+
+    except Exception as e:
+        print(str(e))
+        return 400, {"message": "Invalid token"} 
+    
 
 
-    
-    
+
+
+
+
+
