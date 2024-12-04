@@ -43,8 +43,12 @@ def login(request,data:LoginSchema):
         user= auth.authenticate(username=data.username, password=data.Password)
         if not user:
             return 400,{'Invalid user or Password'}
-        
+        #gerando token com base na instancia  do usuario
         access_token = AccessToken.for_user(user)
+        
+        if not access_token:
+            # Erro ao gerar do token
+            return 500, {"detail": "Failed to generate access token"}
 
         
         return 200, {
